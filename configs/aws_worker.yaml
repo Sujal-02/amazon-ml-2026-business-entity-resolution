@@ -1,0 +1,50 @@
+data_dir: /data/pq
+cache_dir: /data/pq
+work_dir: /data/work
+artifacts_dir: /data/work/artifacts
+out_dir: /data/work/output
+seed: 0
+n_jobs: 2
+n_folds: 5
+sample:
+  train: 1.0
+  test: 1.0
+blocking:
+  block_ratio: 8
+  index_type: auto
+  k_fwd: 30
+  k_rev: 10
+  key_cols:
+    concat: key_concat
+    house_loc: key_house_loc
+    house_street: key_house_street
+    name: key_name
+    name_pair:
+    - name_key
+    - name_key
+    name_x_num:
+    - name_key
+    - addr_nums
+    skel: key_skel
+  key_max_block:
+    name_pair: 30
+    name_x_num: 30
+  lsa:
+    dim: 128
+    max_features: 300000
+    ngram:
+    - 2
+    - 4
+    views:
+    - name
+    - addr
+    - both
+  max_block: 50
+  select:
+    avg_per_s1: 50
+    min_per_cand: 2
+    min_per_s1: 5
+    n_jobs: 2
+    neg_frac: 0.15
+    rounds: 150
+features_chunk_pairs: 3000000

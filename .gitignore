@@ -1,0 +1,26 @@
+# data, models, outputs (never commit)
+*.tsv
+*.parquet
+*.pkl
+*.zip
+*.npz
+*.npy
+output/
+work*/
+artifacts/
+
+# generated per-variant configs (absolute local paths)
+configs/local_final_B.yaml
+configs/local_final_C.yaml
+configs/local_final_CE*.yaml
+configs/local_final_FINAL.yaml
+
+# tooling noise
+__pycache__/
+*.pyc
+.pytest_cache/
+catboost_info/
+.ipynb_checkpoints/
+kaggle.json
+.env
+*.log

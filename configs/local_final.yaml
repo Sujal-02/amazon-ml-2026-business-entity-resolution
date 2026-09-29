@@ -1,0 +1,87 @@
+data_dir: D:/er_data/student_resource/dataset
+cache_dir: D:/er_data/pq
+work_dir: D:/er_data/work_dev
+artifacts_dir: D:/er_data/work_dev/artifacts
+out_dir: D:/er_data/work_dev/output
+seed: 0
+n_jobs: 6
+n_folds: 5
+sample:
+  train: 0.08
+  test: 1.0
+blocking:
+  block_ratio: 8
+  index_type: auto
+  k_fwd: 30
+  k_rev: 10
+  key_cols:
+    concat: key_concat
+    house_loc: key_house_loc
+    house_street: key_house_street
+    name: key_name
+    name_pair:
+    - name_key
+    - name_key
+    name_x_num:
+    - name_key
+    - addr_nums
+    skel: key_skel
+  key_max_block:
+    name_pair: 30
+    name_x_num: 30
+  lsa:
+    dim: 128
+    max_features: 300000
+    ngram:
+    - 2
+    - 4
+    views:
+    - name
+    - addr
+    - both
+  max_block: 50
+  select:
+    avg_per_s1: 50
+    min_per_cand: 2
+    min_per_s1: 5
+    n_jobs: 6
+    neg_frac: 0.15
+    rounds: 150
+neg_downsample:
+  keep_top: 15
+  rest_frac: 0.3
+stack:
+  stage2_models:
+  - lgb
+  - xgb
+  - cat
+  extra_scores: []
+gbdt_train_s1_frac: 0.5
+gbdt_params:
+  lgb:
+    num_leaves: 127
+    learning_rate: 0.06
+    min_data_in_leaf: 200
+    num_boost_round: 2500
+    num_threads: 7
+  xgb:
+    max_depth: 8
+    eta: 0.08
+    num_boost_round: 1500
+    nthread: 7
+    max_bin: 256
+  cat:
+    depth: 8
+    learning_rate: 0.1
+    iterations: 800
+    thread_count: 7
+    border_count: 128
+features_chunk_pairs: 3000000
+decision_unseen_bias: -0.3
+finalize:
+  test_dir: D:/er_data/student_resource/dataset/test
+  validator: D:/er_data/student_resource/utils/validate_submission.py
+  out_dir: D:/er_data/work_dev/output/final
+tune:
+  s1_frac: 0.3
+  threads: 7

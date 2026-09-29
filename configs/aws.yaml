@@ -1,0 +1,129 @@
+data_dir: /data/student_resource/dataset
+cache_dir: /data/pq
+work_dir: /data/work
+artifacts_dir: /data/work/artifacts
+out_dir: /data/work/output
+seed: 0
+n_jobs: 44
+n_folds: 5
+deep_train_folds:
+- 0
+- 1
+- 2
+sample:
+  train: 1.0
+  test: 1.0
+blocking:
+  k_fwd: 30
+  k_rev: 8
+  k_fwd_dense: 40
+  k_rev_dense: 10
+  max_cand_per_s1: 50
+  always_keep_rev_rank: 3
+  index_type: auto
+  max_block: 50
+  lsa:
+    views:
+    - name
+    - addr
+    - both
+    dim: 128
+    ngram:
+    - 2
+    - 4
+    max_features: 400000
+  dense_model: /data/work/artifacts/biencoder
+neg_downsample:
+  keep_top: 15
+  rest_frac: 0.3
+gbdt_train_s1_frac: 0.4
+gbdt_params:
+  lgb:
+    num_leaves: 255
+    learning_rate: 0.05
+    min_data_in_leaf: 200
+    num_boost_round: 4000
+  xgb:
+    max_depth: 9
+    eta: 0.05
+    num_boost_round: 4000
+  cat:
+    depth: 8
+    learning_rate: 0.08
+    iterations: 4000
+stack:
+  stage2_models:
+  - lgb
+  - xgb
+  - cat
+biencoder:
+  base: intfloat/multilingual-e5-base
+  max_len: 64
+  batch_size: 384
+  epochs: 2
+  lr: 3.0e-05
+  temperature: 0.05
+  hard_negatives: 1
+cross_encoders:
+  xlmr_large:
+    base: FacebookAI/xlm-roberta-large
+    lr: 1.0e-05
+    batch_size: 32
+    grad_accum: 4
+    epochs: 2
+    max_len: 160
+    precision: bf16
+    neg_ratio: 4
+    max_train_pairs: 4000000
+  bge_reranker_m3:
+    base: BAAI/bge-reranker-v2-m3
+    lr: 1.0e-05
+    batch_size: 32
+    grad_accum: 4
+    epochs: 2
+    max_len: 160
+    precision: bf16
+    neg_ratio: 4
+    max_train_pairs: 4000000
+  mdeberta:
+    base: microsoft/mdeberta-v3-base
+    lr: 2.0e-05
+    batch_size: 64
+    grad_accum: 2
+    epochs: 3
+    max_len: 160
+    precision: fp32
+    neg_ratio: 4
+    max_train_pairs: 4000000
+  mmbert:
+    base: jhu-clsp/mmBERT-base
+    lr: 3.0e-05
+    batch_size: 64
+    grad_accum: 2
+    epochs: 3
+    max_len: 160
+    precision: bf16
+    neg_ratio: 4
+    max_train_pairs: 4000000
+  xlmr_base:
+    base: FacebookAI/xlm-roberta-base
+    lr: 2.0e-05
+    batch_size: 64
+    grad_accum: 2
+    epochs: 2
+    max_len: 160
+    precision: bf16
+    neg_ratio: 4
+    max_train_pairs: 4000000
+llm:
+  qwen3_4b:
+    base: Qwen/Qwen3-4B-Instruct-2507
+    lora_r: 16
+    lora_alpha: 32
+    lr: 0.0001
+    epochs: 1
+    max_len: 256
+    band:
+    - 0.02
+    - 0.98
+    max_train_pairs: 600000
