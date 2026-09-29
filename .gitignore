@@ -24,3 +24,13 @@ catboost_info/
 kaggle.json
 .env
 *.log
+
+# AI-assistant / editor / OS files
+.claude/
+CLAUDE.md
+.cursor/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
